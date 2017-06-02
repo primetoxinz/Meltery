@@ -2,6 +2,7 @@ package meltery;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -14,6 +15,7 @@ import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.materials.Material;
 import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
+import slimeknights.tconstruct.shared.TinkerFluids;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +35,7 @@ public class MelteryHandler {
                 registerOredictMelting(material.getFluid(), StringUtils.capitalize(material.identifier));
             }
         }
+        registerMelting(Items.CLAY_BALL, TinkerFluids.clay, Material.VALUE_Ingot);
     }
 
     public static void registerOredictMelting(Fluid fluid, String ore) {
