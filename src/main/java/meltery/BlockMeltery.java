@@ -140,4 +140,9 @@ public class BlockMeltery extends BlockDirectional {
         // prevent interaction so stuff like buckets and other things don't place the liquid block
         return FluidUtil.getFluidHandler(heldItem) != null;
     }
+
+    @Override
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return state.getValue(ENABLED) ? 15 : 0;
+    }
 }

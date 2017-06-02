@@ -2,6 +2,7 @@ package meltery;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,6 +37,7 @@ public class MelteryHandler {
             }
         }
         registerMelting(Items.CLAY_BALL, TinkerFluids.clay, Material.VALUE_Ingot);
+        registerMelting(Blocks.CLAY, TinkerFluids.clay, Material.VALUE_BrickBlock);
     }
 
     public static void registerOredictMelting(Fluid fluid, String ore) {
