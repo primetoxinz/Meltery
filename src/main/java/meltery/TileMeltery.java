@@ -32,7 +32,6 @@ public class TileMeltery extends TileEntity implements ITickable {
     public FluidTank tank;
     public SimpleStackHandler inventory;
     private int progress;
-    public static int MELT_TIME = 100;
     public static int MAX_FLUID = 1440;
 
     public TileMeltery() {
@@ -117,7 +116,7 @@ public class TileMeltery extends TileEntity implements ITickable {
         MeltingRecipe recipe = MelteryHandler.getMelting(melt);
 
         if (recipe != null) {
-            if (progress > MELT_TIME) {
+            if (progress > recipe.getUsableTemperature()) {
                 FluidStack fluidStack = recipe.getResult();
                 if ((tank.getCapacity() - tank.getFluidAmount()) >= tank.fill(fluidStack, false)) {
                     tank.fill(fluidStack, true);
