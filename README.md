@@ -1,4 +1,4 @@
-#Meltery
+#Meltery  
 Tinker's Construct addon that adds a block that can melt ingots,dusts and nuggets for use with casts.
 
 This Block has no GUI; It is instead entirely world interaction.
@@ -7,7 +7,7 @@ This item will then be melted over time and can be extracted with any fluid pipe
 The Meltery also gives audio cues once it melts an item, or if it cannot because the tank is full.
 
 
-recipes can be added to the Meltery via Minetweaker like so
-``` meltery.Meltery.addMelting(ILiquidStack output, IIngredient input, int temp)```
-or remove with
+recipes can be added to the Meltery via Minetweaker like so  
+``` meltery.Meltery.addMelting(ILiquidStack output, IIngredient input, int temp)```  
+or remove with  
 ``` meltery.Meltery.removeMelting(IItemStack input) ```
