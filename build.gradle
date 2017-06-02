@@ -1,0 +1,76 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+//Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+
+
+version = "1.0.0-1.11.2"
+group = "meltery" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "Meltery"
+
+sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
+minecraft {
+    version = "1.11.2-13.20.0.2282"
+    runDir = "run"
+    mappings = "snapshot_20170323"
+    replace "%VERSION%":"${project.version}"
+}
+repositories {
+    maven { url 'http://dvs1.progwml6.com/files/maven' }
+    maven { url "http://blamejared.com/maven" }
+    maven { url "http://maven.amadornes.com/" }
+}
+dependencies {
+    deobfCompile "mezz.jei:jei_1.11.2:+"
+	deobfCompile "slimeknights.mantle:Mantle:1.11.2+"
+	deobfCompile "slimeknights:TConstruct:1.11.2+"
+    deobfCompile "MineTweaker3:MineTweaker3-API:3.0.25.103"
+    deobfCompile "com.blamejared:MTLib:2.+"
+    deobfCompile "blusunrize:ImmersiveEngineering:0.11-59-108:deobf"
+    files("libs/*")
+}
+
+jar {
+    manifest {
+        attributes 'FMLAT': 'bwm_at.cfg'
+    }
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier "dev"
+}
+
+artifacts {
+    archives deobfJar
+}
+
+processResources {
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        // replace version and mcversion
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+
+    // copy everything else except the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}

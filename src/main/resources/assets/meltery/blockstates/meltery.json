@@ -1,0 +1,47 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "front": "meltery:blocks/meltery_front_off",
+      "side": "meltery:blocks/meltery_side",
+      "bottom": "meltery:blocks/meltery_bottom",
+      "top": "meltery:blocks/meltery_top"
+    },
+    "model": "meltery:meltery",
+    "uvlock": true
+  },
+  "variants": {
+    "normal": [
+      {
+      }
+    ],
+    "inventory": [
+      {
+        "transform": "forge:default-block"
+      }
+    ],
+    "facing": {
+      "north": {
+        "y": 180
+      },
+      "south": {
+
+      },
+      "east": {
+        "y": 270
+      },
+      "west": {
+        "y": 90
+      }
+    },
+    "enabled": {
+      "true": {
+        "textures": {
+          "front":"meltery:blocks/meltery_front_on"
+        }
+
+      },
+      "false": {}
+    }
+  }
+}
