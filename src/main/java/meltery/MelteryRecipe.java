@@ -9,6 +9,7 @@ import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
  * Created by tyler on 6/2/17.
  */
 public class MelteryRecipe extends MeltingRecipe {
+
     public MelteryRecipe(RecipeMatch input, Fluid output) {
         super(input, output);
     }

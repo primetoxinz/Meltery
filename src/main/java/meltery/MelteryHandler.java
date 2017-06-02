@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * Created by tyler on 6/1/17.
  */
 public class MelteryHandler {
-    public static List<MeltingRecipe> meltingRecipes = new ArrayList<>();
+    public static List<MelteryRecipe> meltingRecipes = new ArrayList<>();
 
     public static void init() {
         for(Material material: TinkerRegistry.getAllMaterials()) {
@@ -82,7 +82,7 @@ public class MelteryHandler {
 
     public static void registerMelting(MelteryRecipe recipe) {
         meltingRecipes.add(recipe);
-        FMLLog.info("[Meltery] Registering Melting Recipe %s,%s", recipe.input.getInputs(), recipe.getResult().getUnlocalizedName());
+//        FMLLog.info("[Meltery] Registering Melting Recipe %s,%s", recipe.input.getInputs(), recipe.getResult().getUnlocalizedName());
     }
 
     public static MeltingRecipe getMelting(ItemStack stack) {
