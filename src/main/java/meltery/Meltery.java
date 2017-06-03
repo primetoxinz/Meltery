@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -30,18 +31,19 @@ public class Meltery {
     public void preInit(FMLPreInitializationEvent e) {
         GameRegistry.register(MELTERY);
         GameRegistry.register(new ItemBlock(MELTERY).setRegistryName(MELTERY.getRegistryName()));
-        GameRegistry.registerTileEntity(TileMeltery.class,"tile.meltery");
-        GameRegistry.addShapedRecipe(new ItemStack(MELTERY), "BBB","B B","BBB", 'B', Blocks.BRICK_BLOCK);
+        GameRegistry.registerTileEntity(TileMeltery.class, "tile.meltery");
+        GameRegistry.addShapedRecipe(new ItemStack(MELTERY), "BBB", "B B", "BBB", 'B', Blocks.BRICK_BLOCK);
         proxy.preInit(e);
     }
+
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
-
         MelteryHandler.init();
-        Minetweaker.init();
+        if (Loader.isModLoaded("crafttweaker")) {
+            Minetweaker.init();
+        }
 
     }
-
 
 
 }

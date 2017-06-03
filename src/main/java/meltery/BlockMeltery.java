@@ -27,6 +27,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * Created by tyler on 6/1/17.
@@ -44,6 +45,11 @@ public class BlockMeltery extends BlockDirectional {
         setHardness(1.5F);
         setResistance(10.0F);
         setHarvestLevel("pickaxe",1);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+        tooltip.add("Place above Lava to heat up");
     }
 
     @Override
