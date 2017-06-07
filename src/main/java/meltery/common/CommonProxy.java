@@ -1,4 +1,4 @@
-package meltery;
+package meltery.common;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 

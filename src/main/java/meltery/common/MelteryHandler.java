@@ -1,4 +1,4 @@
-package meltery;
+package meltery.common;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
@@ -8,14 +8,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.materials.Material;
-import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
 import slimeknights.tconstruct.shared.TinkerFluids;
 
 import java.util.ArrayList;
@@ -36,6 +34,7 @@ public class MelteryHandler {
                 registerOredictMelting(material.getFluid(), StringUtils.capitalize(material.identifier));
             }
         }
+        registerOredictMelting(TinkerFluids.gold,"Gold");
         registerMelting(Items.CLAY_BALL, TinkerFluids.clay, Material.VALUE_Ingot);
         registerMelting(Blocks.CLAY, TinkerFluids.clay, Material.VALUE_BrickBlock);
     }
@@ -87,8 +86,8 @@ public class MelteryHandler {
 //        FMLLog.info("[Meltery] Registering Melting Recipe %s,%s", recipe.input.getInputs(), recipe.getResult().getUnlocalizedName());
     }
 
-    public static MeltingRecipe getMelting(ItemStack stack) {
-        for (MeltingRecipe recipe : meltingRecipes) {
+    public static MelteryRecipe getMelteryRecipe(ItemStack stack) {
+        for (MelteryRecipe recipe : meltingRecipes) {
             if (recipe.matches(stack)) {
                 return recipe;
             }
@@ -96,9 +95,6 @@ public class MelteryHandler {
         return null;
     }
 
-    public static boolean hasMeltingRecipe(ItemStack stack) {
-        return getMelting(stack) != null;
-    }
 
     public static NonNullList<ItemStack> getOreNames(String prefix) {
         NonNullList<ItemStack> list = NonNullList.create();

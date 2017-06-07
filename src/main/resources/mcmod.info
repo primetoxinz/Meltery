@@ -1,16 +1,17 @@
 [
   {
-    "modid": "betterwithmods",
-    "name": "Better With Mods",
-    "description": "Your one-stop shop for mechanical power and sadism.",
+    "modid": "meltery",
+    "name": "Meltery",
+    "description": "Melts metals",
     "version": "${version}",
     "mcversion": "${mcversion}",
     "url": "",
     "updateUrl": "",
     "authorList": [
-      "BeetoGuy"
+      "primetoxinz",
+      "Gil"
     ],
-    "credits": "FlowerChild, for making Better Than Wolves",
+    "credits": "Gil for the idea and the textures",
     "logoFile": "",
     "screenshots": [],
     "dependencies": []

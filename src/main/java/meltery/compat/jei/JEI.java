@@ -1,8 +1,8 @@
 package meltery.compat.jei;
 
 import meltery.Meltery;
-import meltery.MelteryHandler;
-import meltery.MelteryRecipe;
+import meltery.common.MelteryHandler;
+import meltery.common.MelteryRecipe;
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;

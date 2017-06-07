@@ -1,4 +1,4 @@
-package meltery;
+package meltery.common;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;

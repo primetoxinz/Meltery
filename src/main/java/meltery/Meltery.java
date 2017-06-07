@@ -1,5 +1,9 @@
 package meltery;
 
+import meltery.common.block.BlockMeltery;
+import meltery.common.CommonProxy;
+import meltery.common.MelteryHandler;
+import meltery.common.tile.TileMeltery;
 import meltery.compat.minetweaker.Minetweaker;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -11,6 +15,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 /**
  * Created by tyler on 6/1/17.
@@ -24,15 +29,14 @@ public class Meltery {
 
     public static Block MELTERY = new BlockMeltery();
 
-    @SidedProxy(clientSide = "meltery.ClientProxy", serverSide = "meltery.CommonProxy")
+    @SidedProxy(clientSide = "meltery.client.ClientProxy", serverSide = "meltery.common.CommonProxy")
     public static CommonProxy proxy;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent e) {
-        GameRegistry.register(MELTERY);
-        GameRegistry.register(new ItemBlock(MELTERY).setRegistryName(MELTERY.getRegistryName()));
+        registerBlock(MELTERY);
         GameRegistry.registerTileEntity(TileMeltery.class, "tile.meltery");
-        GameRegistry.addShapedRecipe(new ItemStack(MELTERY), "BBB", "B B", "BBB", 'B', Blocks.BRICK_BLOCK);
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(MELTERY), "I I", "I I", "BBB", 'I', "ingotIron", 'B', Blocks.BRICK_BLOCK));
         proxy.preInit(e);
     }
 
@@ -45,5 +49,9 @@ public class Meltery {
 
     }
 
-
+    public void registerBlock(Block block) {
+        block.setUnlocalizedName(block.getRegistryName().getResourcePath());
+        GameRegistry.register(block);
+        GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
+    }
 }

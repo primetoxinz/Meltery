@@ -1,5 +1,7 @@
-package meltery;
+package meltery.common.tile;
 
+import meltery.Utils;
+import meltery.common.MelteryHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -10,15 +12,19 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import slimeknights.tconstruct.library.fluid.FluidTankAnimated;
 import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
 
 import javax.annotation.Nonnull;
@@ -29,14 +35,14 @@ import javax.annotation.Nonnull;
 public class TileMeltery extends TileEntity implements ITickable {
 
 
-    public FluidTank tank;
+    public FluidTankAnimated tank;
     public SimpleStackHandler inventory;
     private int progress;
-    public static int MAX_FLUID = 1440;
+    public static int MAX_FLUID = 7000;
 
     public TileMeltery() {
         this.inventory = new SimpleStackHandler(1, this);
-        this.tank = new FluidTank(MAX_FLUID);
+        this.tank = new FluidTankAnimated(MAX_FLUID,this);
     }
 
     @Override
@@ -68,7 +74,7 @@ public class TileMeltery extends TileEntity implements ITickable {
         if (inventory == null)
             inventory = new SimpleStackHandler(1, this);
         if (tank == null)
-            tank = new FluidTank(MAX_FLUID);
+            tank = new FluidTankAnimated(MAX_FLUID,this);
         tank.readFromNBT(compound);
         inventory.deserializeNBT(compound);
         progress = compound.getInteger("progress");
@@ -110,26 +116,42 @@ public class TileMeltery extends TileEntity implements ITickable {
 
     @Override
     public void update() {
-        if (!hasFuel())
-            return;
-        ItemStack melt = inventory.getStackInSlot(0);
-        MeltingRecipe recipe = MelteryHandler.getMelting(melt);
+        if (hasFuel()) {
+            ItemStack melt = inventory.getStackInSlot(0);
+            MeltingRecipe recipe = MelteryHandler.getMelteryRecipe(melt);
 
-        if (recipe != null) {
-            if (progress > recipe.getUsableTemperature()) {
-                FluidStack fluidStack = recipe.getResult();
-                if ((tank.getCapacity() - tank.getFluidAmount()) >= tank.fill(fluidStack, false)) {
-                    tank.fill(fluidStack, true);
-                    world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL_LAVA, SoundCategory.BLOCKS, 1.0f, 0.75f);
-                    melt.shrink(1);
-                } else {
-                    world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0f, 0.75f);
+            if (recipe != null) {
+                if (progress > recipe.getUsableTemperature()) {
+                    FluidStack fluidStack = recipe.getResult();
+                    if ((tank.getCapacity() - tank.getFluidAmount()) >= tank.fill(fluidStack, false)) {
+                        tank.fill(fluidStack, true);
+                        world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL_LAVA, SoundCategory.BLOCKS, 1.0f, 0.75f);
+                        melt.shrink(1);
+                    } else {
+                        world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0f, 0.75f);
+                    }
+                    setProgress(0);
                 }
-                setProgress(0);
+                incrementProcress();
             }
-            incrementProcress();
         }
+        if(tank.getFluidAmount() > 0) {
+            for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+                BlockPos side = pos.offset(facing);
+                if (!world.isAirBlock(side)) {
+                    if (world.getTileEntity(side) != null) {
+                        TileEntity tile = world.getTileEntity(side);
+                        if (!(tile instanceof TileMeltery) && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite())) {
+                            IFluidHandler fluidHandler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite());
+                            if (fluidHandler instanceof FluidTank) {
+                                FluidUtil.tryFluidTransfer(fluidHandler, tank, 140, true);
+                            }
+                        }
 
+                    }
+                }
+            }
+        }
     }
 
 
@@ -148,6 +170,10 @@ public class TileMeltery extends TileEntity implements ITickable {
 
     public boolean isRunning() {
         return progress > 1;
+    }
+
+    public FluidTankAnimated getInternalTank() {
+        return tank;
     }
 
     public class SimpleStackHandler extends ItemStackHandler {
@@ -171,6 +197,11 @@ public class TileMeltery extends TileEntity implements ITickable {
         @Override
         protected int getStackLimit(int slot, @Nonnull ItemStack stack) {
             return 64;
+        }
+
+        public boolean isFull() {
+            ItemStack stack = getStackInSlot(0);
+            return stack.getCount() == stack.getMaxStackSize();
         }
     }
 }
