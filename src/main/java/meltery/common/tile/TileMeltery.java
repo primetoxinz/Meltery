@@ -17,6 +17,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -143,7 +144,7 @@ public class TileMeltery extends TileEntity implements ITickable {
                         TileEntity tile = world.getTileEntity(side);
                         if (!(tile instanceof TileMeltery) && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite())) {
                             IFluidHandler fluidHandler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite());
-                            if (fluidHandler instanceof FluidTank) {
+                            if (fluidHandler instanceof IFluidTank) {
                                 FluidUtil.tryFluidTransfer(fluidHandler, tank, 140, true);
                             }
                         }
