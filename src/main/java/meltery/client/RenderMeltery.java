@@ -35,7 +35,8 @@ public class RenderMeltery extends TileEntitySpecialRenderer<TileMeltery> {
                 tank.renderOffset = 0;
             }
             float d = RenderUtil.FLUID_OFFSET;
-            RenderUtil.renderFluidCuboid(liquid, tile.getPos(), x, y+1/16d, z, d, d, d, 1d - d, height - d - 1/16d, 1d - d);
+
+            RenderUtil.renderFluidCuboid(liquid, tile.getPos(), x, y+1/16d, z, d, d, d, 1d - d, Math.max(0,(14/16d)*height), 1d - d);
         }
         renderItem(x,y,z,tile);
     }
@@ -63,6 +64,8 @@ public class RenderMeltery extends TileEntitySpecialRenderer<TileMeltery> {
                 (float) (brightness / 0x10000) / 1f);
         if (isItem) {
             GlStateManager.rotate(-90, 1, 0, 0);
+        } else {
+            GlStateManager.scale(0.5,0.5,0.5);
         }
         IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, meltery.getWorld(), null);
         model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false);

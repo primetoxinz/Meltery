@@ -39,7 +39,7 @@ public class TileMeltery extends TileEntity implements ITickable {
     public FluidTankAnimated tank;
     public SimpleStackHandler inventory;
     private int progress;
-    public static int MAX_FLUID = 7000;
+    public static int MAX_FLUID = 9000;
 
     public TileMeltery() {
         this.inventory = new SimpleStackHandler(1, this);
@@ -200,9 +200,19 @@ public class TileMeltery extends TileEntity implements ITickable {
             return 64;
         }
 
+        public boolean isEmpty() {
+            return getStackInSlot(0).isEmpty();
+        }
         public boolean isFull() {
             ItemStack stack = getStackInSlot(0);
             return stack.getCount() == stack.getMaxStackSize();
+        }
+
+        public boolean canInput(ItemStack stack) {
+            ItemStack slot = getStackInSlot(0);
+            if(slot.isItemEqual(stack))
+                return !isFull();
+            return isEmpty();
         }
     }
 }

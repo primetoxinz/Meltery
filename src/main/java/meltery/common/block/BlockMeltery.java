@@ -15,6 +15,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -136,10 +137,9 @@ public class BlockMeltery extends BlockDirectional {
 
         ItemStack heldItem = playerIn.getHeldItem(hand);
         TileMeltery.SimpleStackHandler itemHandler = (TileMeltery.SimpleStackHandler) tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
-        IItemHandler playerInventory = playerIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
         MelteryRecipe recipe = MelteryHandler.getMelteryRecipe(heldItem);
 
-        if (!itemHandler.isFull() && recipe != null && (tile.getInternalTank().getFluid() == null || recipe.output.isFluidEqual(tile.getInternalTank().getFluid()))) {
+        if (itemHandler.canInput(heldItem) && recipe != null && (tile.getInternalTank().getFluid() == null || recipe.output.isFluidEqual(tile.getInternalTank().getFluid()))) {
             ItemStack insert = heldItem.copy();
             insert.setCount(1);
             boolean isEmpty = itemHandler.getStackInSlot(0).isEmpty();
@@ -151,12 +151,16 @@ public class BlockMeltery extends BlockDirectional {
                     tile.setProgress(0);
                 return true;
             }
-        } else if (playerIn.isSneaking()) {
-            ItemStack stack = itemHandler.extractItem(0, 1, false);
-            if (!stack.isEmpty() && playerInventory.insertItem(playerIn.inventory.currentItem, stack.copy(), false).isEmpty()) {
-                worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEMFRAME_ADD_ITEM, SoundCategory.BLOCKS, 0.75f, 1.0f);
-                tile.setProgress(0);
-                return true;
+        } else if (playerIn.isSneaking() && hand == EnumHand.MAIN_HAND) {
+            ItemStack stack = itemHandler.getStackInSlot(0);
+            if(!stack.isEmpty()) {
+                if(stack.getCount() == 1)
+                    tile.setProgress(0);
+                ItemStack copy = stack.copy();
+                copy.setCount(1);
+                ItemHandlerHelper.giveItemToPlayer(playerIn,copy);
+                stack.shrink(1);
+                playerIn.swingArm(EnumHand.MAIN_HAND);
             }
             return false;
         }
@@ -206,7 +210,7 @@ public class BlockMeltery extends BlockDirectional {
             ItemStack stack = ((EntityItem) entityIn).getEntityItem();
             MelteryRecipe recipe = MelteryHandler.getMelteryRecipe(stack);
 
-            if (!itemHandler.isFull() && recipe != null && (tile.getInternalTank().getFluid() == null || recipe.output.isFluidEqual(tile.getInternalTank().getFluid()))) {
+            if (itemHandler.canInput(stack) && recipe != null && (tile.getInternalTank().getFluid() == null || recipe.output.isFluidEqual(tile.getInternalTank().getFluid()))) {
                 boolean isEmpty = itemHandler.getStackInSlot(0).isEmpty();
                 ItemStack result = ItemHandlerHelper.insertItem(itemHandler, stack, false);
                 if (result.isEmpty()) {
