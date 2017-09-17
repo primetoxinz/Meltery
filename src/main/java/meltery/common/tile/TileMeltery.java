@@ -1,5 +1,6 @@
 package meltery.common.tile;
 
+import meltery.Meltery;
 import meltery.Utils;
 import meltery.common.MelteryHandler;
 import net.minecraft.block.material.Material;
@@ -166,7 +167,7 @@ public class TileMeltery extends TileEntity implements ITickable {
     }
 
     public boolean hasFuel() {
-        return world.getBlockState(pos.down()).getMaterial() == Material.LAVA;
+        return Meltery.FUEL_SOURCE.contains(world.getBlockState(pos.down()));
     }
 
     public boolean isRunning() {

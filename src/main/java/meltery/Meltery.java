@@ -1,11 +1,15 @@
 package meltery;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import meltery.common.block.BlockMeltery;
 import meltery.common.CommonProxy;
 import meltery.common.MelteryHandler;
 import meltery.common.tile.TileMeltery;
 import meltery.compat.minetweaker.Minetweaker;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -17,6 +21,9 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * Created by tyler on 6/1/17.
  */
@@ -25,7 +32,10 @@ public class Meltery {
     public static final String MODID = "meltery";
     public static final String NAME = "Meltery";
     public static final String VERSION = "1.0.0";
-    public static final String DEPENDENCIES = "required-after:tconstruct";
+    public static final String DEPENDENCIES = "required-after:tconstruct;after:MineTweaker3";
+
+
+    public static List<IBlockState> FUEL_SOURCE = Lists.newArrayList();
 
     public static Block MELTERY = new BlockMeltery();
 

@@ -43,7 +43,12 @@ public class SmeltingRecipeCategory implements IRecipeCategory<SmeltingRecipeWra
         return Util.translate("gui.jei.meltery.title");
     }
 
-    @Nonnull
+	@Override
+	public String getModName() {
+		return Meltery.NAME;
+	}
+
+	@Nonnull
     @Override
     public IDrawable getBackground() {
         return background;
