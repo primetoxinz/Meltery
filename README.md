@@ -11,3 +11,6 @@ recipes can be added to the Meltery via Minetweaker like so
 ``` meltery.Meltery.addMelting(ILiquidStack output, IIngredient input, int temp)```  
 or remove with  
 ``` meltery.Meltery.removeMelting(IItemStack input) ```
+
+Add custom fuel sources, input *must* be a block. Should support metadata in most cases.
+``` meltery.Meltery.addFuelBlock(IItemStack block) ```

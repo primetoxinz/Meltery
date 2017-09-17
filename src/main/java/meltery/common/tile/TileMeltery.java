@@ -4,6 +4,7 @@ import meltery.Meltery;
 import meltery.Utils;
 import meltery.common.MelteryHandler;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -167,7 +168,8 @@ public class TileMeltery extends TileEntity implements ITickable {
     }
 
     public boolean hasFuel() {
-        return Meltery.FUEL_SOURCE.contains(world.getBlockState(pos.down()));
+	    IBlockState state = world.getBlockState(pos.down());
+        return Meltery.FUEL_SOURCE.contains(state) || state.getMaterial() == Material.LAVA;
     }
 
     public boolean isRunning() {
